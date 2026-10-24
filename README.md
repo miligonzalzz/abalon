@@ -42,3 +42,17 @@ Proyecto de aprendizaje automático para el análisis de datos y el entrenamient
 
 ## Reproducibilidad
 Se utiliza un entorno virtual y un archivo `requirements.txt` con versiones fijadas para facilitar la instalación de las dependencias.
+## Preprocesamiento
+
+Para ejecutar el preprocesamiento desde la raíz del proyecto, correr:
+
+```powershell
+.\.venv\Scripts\python.exe src/preprocess.py
+```
+
+El script lee el dataset original desde `data/raw/abalone_raw.csv` y genera:
+
+- `data/processed/abalone_clean.csv`: dataset procesado.
+- `data/data_log.json`: registro de la versión, las transformaciones aplicadas y los parámetros utilizados.
+
+Las transformaciones incluyen la creación de la variable `age = Rings + 1.5`, la codificación one-hot de `Sex` y la eliminación de registros con `Height > 0.4`. No se aplica escalado de variables en esta etapa.
