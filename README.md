@@ -106,3 +106,22 @@ Los resultados se almacenan en:
 | R² | 0.5692 |
 
 Las métricas corresponden a una ejecución con `random_state=42` y una proporción de prueba del 20 %. Los resultados pueden variar si se modifican los datos, la configuración o los hiperparámetros.
+
+### Experimento: Random Forest v2
+
+Se entrenó una nueva versión del modelo Random Forest modificando los siguientes hiperparámetros:
+
+- n_estimators = 150
+- max_depth = 10
+- min_samples_leaf = 5
+- random_state = 42
+
+Resultados:
+- MAE: 1.4720
+- RMSE: 2.0970
+- R²: 0.5872
+
+El modelo v2 obtuvo mejores métricas que el modelo v1 sobre el conjunto de prueba utilizado.
+
+Modelo guardado: models/model_v2.pkl
+Métricas guardadas: results/metrics_v2.json
