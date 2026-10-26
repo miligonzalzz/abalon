@@ -125,3 +125,51 @@ El modelo v2 obtuvo mejores métricas que el modelo v1 sobre el conjunto de prue
 
 Modelo guardado: models/model_v2.pkl
 Métricas guardadas: results/metrics_v2.json
+
+### Experimento: Red neuronal (MLP) v3
+
+Se entrenó una nueva versión cambiando el algoritmo: una red neuronal pequeña (`MLPRegressor`) dentro de un `Pipeline` con `StandardScaler`, de modo que el escalado se ajusta solo con el training set.
+
+Configuración:
+- hidden_layer_sizes = (64, 32)
+- activation = relu, solver = adam
+- max_iter = 1000, early_stopping = True
+- random_state = 42 (misma división 80/20 que v1 y v2)
+
+Resultados sobre el conjunto de prueba:
+- MAE: 1.5005
+- RMSE: 2.0922
+- R²: 0.5890
+
+La v3 mejora a v1 en las tres métricas. Frente a v2 (Random Forest ajustado, rama `exp/hiperparametros`), obtiene un RMSE y un R² levemente mejores y un MAE levemente peor. Las diferencias son pequeñas y se midieron sobre una única partición de los datos, así que no alcanzan para afirmar que un modelo sea claramente superior.
+
+Para reproducirlo: `python src/train_model_v3.py`
+
+Modelo guardado: models/model_v3.pkl
+Métricas guardadas: results/metrics_v3.json
+
+### Resolución de conflictos de integración
+
+Al integrar el Pull Request #4 (`exp/red_neuronal`, modelo v3) apareció un conflicto de merge: la rama `exp/hiperparametros` (modelo v2) ya estaba integrada en `main` y ambas ramas habían agregado contenido en las mismas líneas de dos archivos: `README.md` (al final) y `results/experiments_log.csv` (después de la fila de v1). Git no puede decidir solo cómo combinarlos.
+
+Para resolverlo se trajo `main` a la rama (`git merge origin/main`), se editaron ambos archivos a mano y se cerró la fusión con un commit.
+
+**Qué mostraba `results/experiments_log.csv`** (hiperparámetros abreviados):
+
+    <<<<<<< HEAD
+    exp_nn_v3,2026-10-25T20:39:38-03:00,v3,"{...}",1.5005,2.0922,0.5890
+    =======
+    exp_rf_v2,2026-10-25T00:13:27-03:00,v2,"{...}",1.4720,2.0970,0.5872
+    >>>>>>> origin/main
+
+**Qué mostraba `README.md`** (contenido abreviado):
+
+    <<<<<<< HEAD
+    ### Experimento: Red neuronal (MLP) v3
+    [...]
+    =======
+    ### Experimento: Random Forest v2
+    [...]
+    >>>>>>> origin/main
+
+**Criterio de resolución:** los dos cambios son válidos y no se contradicen: son dos experimentos independientes (un algoritmo distinto y unos hiperparámetros distintos). Por eso no se descartó ninguno: se conservaron ambos, ordenados por versión (v1, v2, v3), se eliminaron los marcadores y se verificó que el CSV mantuviera una fila por experimento, con identificadores únicos y legible con pandas.
