@@ -106,3 +106,25 @@ Los resultados se almacenan en:
 | R² | 0.5692 |
 
 Las métricas corresponden a una ejecución con `random_state=42` y una proporción de prueba del 20 %. Los resultados pueden variar si se modifican los datos, la configuración o los hiperparámetros.
+
+### Experimento: Red neuronal (MLP) v3
+
+Se entrenó una nueva versión cambiando el algoritmo: una red neuronal pequeña (`MLPRegressor`) dentro de un `Pipeline` con `StandardScaler`, de modo que el escalado se ajusta solo con el training set.
+
+Configuración:
+- hidden_layer_sizes = (64, 32)
+- activation = relu, solver = adam
+- max_iter = 1000, early_stopping = True
+- random_state = 42 (misma división 80/20 que v1 y v2)
+
+Resultados sobre el conjunto de prueba:
+- MAE: 1.5005
+- RMSE: 2.0922
+- R²: 0.5890
+
+La v3 mejora a v1 en las tres métricas. Frente a v2 (Random Forest ajustado, rama `exp/hiperparametros`), obtiene un RMSE y un R² levemente mejores y un MAE levemente peor. Las diferencias son pequeñas y se midieron sobre una única partición de los datos, así que no alcanzan para afirmar que un modelo sea claramente superior.
+
+Para reproducirlo: `python src/train_model_v3.py`
+
+Modelo guardado: models/model_v3.pkl
+Métricas guardadas: results/metrics_v3.json
