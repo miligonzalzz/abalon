@@ -15,20 +15,34 @@ Proyecto de aprendizaje automático para el análisis de datos y el entrenamient
    cd abalon
    ```
 
-2. Crear un entorno virtual:
-   ```bash
-   python -m venv .venv
+2. Crear un entorno virtual con Python 3.13. Primero comprobá qué versión usa tu terminal:
+   ```powershell
+   python --version
    ```
+   - Si muestra `Python 3.13.x`, creá el entorno así:
+     ```powershell
+     python -m venv .venv
+     ```
+   - Si muestra otra versión (por ejemplo `3.14`, por tener Conda activo), indicá la ruta completa de tu Python 3.13. Para encontrarla, ejecutá `where.exe python`:
+     ```powershell
+     & "C:\ruta\a\Python313\python.exe" -m venv .venv
+     ```
+
 
 3. Activar el entorno virtual en Windows PowerShell:
    ```powershell
    .\.venv\Scripts\Activate.ps1
    ```
 
-4. Instalar las dependencias:
+4. Comprobar que el entorno quedó activo e instalar las dependencias:
+   ```powershell
+   python -c "import sys; print(sys.executable)"
+   ```
+   La ruta impresa tiene que terminar en `.venv\Scripts\python.exe`. Si no es así, el entorno no está activo y `pip` instalaría las librerías en otro lugar: repetí el paso 3. Recién entonces:
    ```powershell
    python -m pip install -r requirements.txt
    ```
+
 
 ## Estructura del proyecto
 
